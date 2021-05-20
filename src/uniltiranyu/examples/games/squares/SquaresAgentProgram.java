@@ -43,48 +43,48 @@ public class SquaresAgentProgram implements AgentProgram{
 
 			board = init(p);
 
-			state = false;
+			state = true;
 			count = -1;
 		}
 
 		if (p.get(Squares.TURN).equals(color) ){
-			count++;
-			if(!state){
-				state = count > N * N * 0.2;
+			// count++;
+			// if(!state){
+			// 	state = count > N * N * 0.15;
 				
-				while(true){
-					int i = (int) (Math.random() * N);
-					int j = (int) (Math.random() * N);
+			// 	while(true){
+			// 		int i = (int) (Math.random() * N);
+			// 		int j = (int) (Math.random() * N);
 					
-					int sum = 0;
+			// 		// int sum = 0;
 
-					sum += (p.get(i + ":" + j + ":" + Squares.LEFT)).equals(Squares.TRUE) ? 1 : 0;
-					sum += (p.get(i + ":" + j + ":" + Squares.RIGHT)).equals(Squares.TRUE) ? 1 : 0;
-					// if (sum >= 2) continue;
-					sum += (p.get(i + ":" + j + ":" + Squares.TOP)).equals(Squares.TRUE) ? 1 : 0;
-					// if (sum >= 2) continue;
-					sum += (p.get(i + ":" + j + ":" + Squares.BOTTOM)).equals(Squares.TRUE) ? 1 : 0;
-					if (sum >= 3) continue;
+			// 		// sum += (p.get(i + ":" + j + ":" + Squares.LEFT)).equals(Squares.TRUE) ? 1 : 0;
+			// 		// sum += (p.get(i + ":" + j + ":" + Squares.RIGHT)).equals(Squares.TRUE) ? 1 : 0;
+			// 		// // if (sum >= 2) continue;
+			// 		// sum += (p.get(i + ":" + j + ":" + Squares.TOP)).equals(Squares.TRUE) ? 1 : 0;
+			// 		// // if (sum >= 2) continue;
+			// 		// sum += (p.get(i + ":" + j + ":" + Squares.BOTTOM)).equals(Squares.TRUE) ? 1 : 0;
+			// 		// if (sum >= 3) continue;
 
-					// System.out.println("action: " + count + " " + i + " : " + j + " " + color);
+			// 		// System.out.println("action: " + count + " " + i + " : " + j + " " + color);
 					
-					// System.out.println(i + ":" + j + ":" + Squares.LEFT);
-					boolean can = (p.get(i + ":" + j + ":" + Squares.LEFT)).equals(Squares.FALSE);
-					if(can) return new Action(i + ":" + j + ":" + Squares.LEFT);
+			// 		// System.out.println(i + ":" + j + ":" + Squares.LEFT);
+			// 		boolean can = (p.get(i + ":" + j + ":" + Squares.LEFT)).equals(Squares.FALSE);
+			// 		if(can) return new Action(i + ":" + j + ":" + Squares.LEFT);
 					
-					// System.out.println(i + ":" + j + ":" + Squares.RIGHT);
-					can = (p.get(i + ":" + j + ":" + Squares.RIGHT)).equals(Squares.FALSE);
-					if(can) return new Action(i + ":" + j + ":" + Squares.RIGHT);
+			// 		// System.out.println(i + ":" + j + ":" + Squares.RIGHT);
+			// 		can = (p.get(i + ":" + j + ":" + Squares.RIGHT)).equals(Squares.FALSE);
+			// 		if(can) return new Action(i + ":" + j + ":" + Squares.RIGHT);
 
-					// System.out.println(i + ":" + j + ":" + Squares.TOP);
-					can = (p.get(i + ":" + j + ":" + Squares.TOP)).equals(Squares.FALSE);
-					if(can) return new Action(i + ":" + j + ":" + Squares.TOP);
+			// 		// System.out.println(i + ":" + j + ":" + Squares.TOP);
+			// 		can = (p.get(i + ":" + j + ":" + Squares.TOP)).equals(Squares.FALSE);
+			// 		if(can) return new Action(i + ":" + j + ":" + Squares.TOP);
 
-					// System.out.println(i + ":" + j + ":" + Squares.BOTTOM);
-					can = (p.get(i + ":" + j + ":" + Squares.BOTTOM)).equals(Squares.FALSE);
-					if(can) return new Action(i + ":" + j + ":" + Squares.BOTTOM);
-				}
-			}
+			// 		// System.out.println(i + ":" + j + ":" + Squares.BOTTOM);
+			// 		can = (p.get(i + ":" + j + ":" + Squares.BOTTOM)).equals(Squares.FALSE);
+			// 		if(can) return new Action(i + ":" + j + ":" + Squares.BOTTOM);
+			// 	}
+			// }
 
 			// System.out.println("out");
 
@@ -139,8 +139,6 @@ public class SquaresAgentProgram implements AgentProgram{
 		this.lstW = 0;
 		this.stack = new Stack<>();
 
-		// backtrack(i, board[i].lns, new boolean[N * N]);
-
 		Integer weight = board[i].lns;
 		Stack<Integer> rc = new Stack<>();
 		boolean checked[] = new boolean[N * N];
@@ -178,25 +176,6 @@ public class SquaresAgentProgram implements AgentProgram{
 
 			// board[a].pos = weights[lstW].size() - 1;
 		}
-	}
-
-	private void backtrack(Integer i, Integer weight, boolean[] checked){
-		if(i == null || checked[i]) return;
-		checked[i] = true;
-
-		Square sq = board[i];
-		if(sq.lns == 2) {
-			lstW = ++weight;
-			this.stack.push(i);
-
-			// System.out.println("Backtrack: " + i + " lns " + sq.lns + " " + sq.l + " " + sq.r + " " + sq.t + " " + sq.b);
-			if(!sq.lines[0]) backtrack(sq.l, weight, checked);
-			if(!sq.lines[1]) backtrack(sq.r, weight, checked);
-			if(!sq.lines[2]) backtrack(sq.t, weight, checked);
-			if(!sq.lines[3]) backtrack(sq.b, weight, checked);
-		}
-
-		return;
 	}
 
 	private ArrayList<Integer> scan(Percept p){
