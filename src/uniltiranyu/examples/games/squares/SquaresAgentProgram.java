@@ -8,9 +8,6 @@ import uniltiranyu.Action;
 import uniltiranyu.AgentProgram;
 import uniltiranyu.Percept;
 
-
-import speco.array.Array;
-
 public class SquaresAgentProgram implements AgentProgram{
 
 	private String color;
@@ -21,9 +18,6 @@ public class SquaresAgentProgram implements AgentProgram{
 	private Integer lstW;
 	private Stack<Integer> stack;
 	private LinkedList<Integer> weights[];
-
-	private Integer count;
-	private boolean state;
 
 	protected String lines[] = {Squares.LEFT, Squares.RIGHT, Squares.TOP, Squares.BOTTOM};
 
@@ -36,71 +30,20 @@ public class SquaresAgentProgram implements AgentProgram{
 		if(N == null) {
 			N = Integer.parseInt((String) p.get(Squares.SIZE));
 
-			weights = new LinkedList[N * N + 1];
+			weights = new LinkedList[N * N + 2];
 
 			for(int i = 0; i < weights.length; i++)
 				weights[i] = new LinkedList<Integer>();
 
 			board = init(p);
-
-			state = true;
-			count = -1;
 		}
 
 		if (p.get(Squares.TURN).equals(color) ){
-			// count++;
-			// if(!state){
-			// 	state = count > N * N * 0.15;
-				
-			// 	while(true){
-			// 		int i = (int) (Math.random() * N);
-			// 		int j = (int) (Math.random() * N);
-					
-			// 		// int sum = 0;
-
-			// 		// sum += (p.get(i + ":" + j + ":" + Squares.LEFT)).equals(Squares.TRUE) ? 1 : 0;
-			// 		// sum += (p.get(i + ":" + j + ":" + Squares.RIGHT)).equals(Squares.TRUE) ? 1 : 0;
-			// 		// // if (sum >= 2) continue;
-			// 		// sum += (p.get(i + ":" + j + ":" + Squares.TOP)).equals(Squares.TRUE) ? 1 : 0;
-			// 		// // if (sum >= 2) continue;
-			// 		// sum += (p.get(i + ":" + j + ":" + Squares.BOTTOM)).equals(Squares.TRUE) ? 1 : 0;
-			// 		// if (sum >= 3) continue;
-
-			// 		// System.out.println("action: " + count + " " + i + " : " + j + " " + color);
-					
-			// 		// System.out.println(i + ":" + j + ":" + Squares.LEFT);
-			// 		boolean can = (p.get(i + ":" + j + ":" + Squares.LEFT)).equals(Squares.FALSE);
-			// 		if(can) return new Action(i + ":" + j + ":" + Squares.LEFT);
-					
-			// 		// System.out.println(i + ":" + j + ":" + Squares.RIGHT);
-			// 		can = (p.get(i + ":" + j + ":" + Squares.RIGHT)).equals(Squares.FALSE);
-			// 		if(can) return new Action(i + ":" + j + ":" + Squares.RIGHT);
-
-			// 		// System.out.println(i + ":" + j + ":" + Squares.TOP);
-			// 		can = (p.get(i + ":" + j + ":" + Squares.TOP)).equals(Squares.FALSE);
-			// 		if(can) return new Action(i + ":" + j + ":" + Squares.TOP);
-
-			// 		// System.out.println(i + ":" + j + ":" + Squares.BOTTOM);
-			// 		can = (p.get(i + ":" + j + ":" + Squares.BOTTOM)).equals(Squares.FALSE);
-			// 		if(can) return new Action(i + ":" + j + ":" + Squares.BOTTOM);
-			// 	}
-			// }
-
-			// System.out.println("out");
-
-
 			ArrayList<Integer> changes = scan(p);
-
-			// System.out.println(changes);
 
 			for(Integer i: changes)	backtrack(i);
 
 			int i = 0;
-			// int j = 0;
-			// for(LinkedList<Integer> lL: weights){
-			// 	System.out.println(j + " " + lL);
-			// 	j++;
-			// }
 
 			while(true){
 				if(i < 0 || i >= weights.length) i = 0;
@@ -111,23 +54,13 @@ public class SquaresAgentProgram implements AgentProgram{
 					int x = idx % N;
 					int y = (int) Math.floor(idx / N); 
 
-					// System.out.println("action: " + y + " : " + x + " : " + board[idx].best() + " " + weights[i] + "" + color);
-
 					String best = board[idx].best();
 					if(best == null){
 						weights[i--].removeFirst();
 						i--;
 					}
-					// if (((String) p.get(y + ":" + x + ":" + best)).equals(Squares.FALSE)) ;
-					// else weights[i].removeFirst();
+
 					else return new Action(y + ":" + x + ":" + best);
-					
-					
-
-					// return new Action(1 + ":" + 2 + ":" + Squares.TOP);
-
-
-					// return dummyAction(p);
 				}
 				i++;
 			}
@@ -156,7 +89,6 @@ public class SquaresAgentProgram implements AgentProgram{
 				lstW = ++weight;
 				this.stack.push(actual);
 	
-				// System.out.println("Backtrack: " + i + " lns " + sq.lns + " " + sq.l + " " + sq.r + " " + sq.t + " " + sq.b);
 				if(!sq.lines[3]) rc.push(sq.b);
 				if(!sq.lines[2]) rc.push(sq.t);
 				if(!sq.lines[1]) rc.push(sq.r);
@@ -167,14 +99,10 @@ public class SquaresAgentProgram implements AgentProgram{
 		while(!stack.empty()){
 			Integer a = stack.pop();
 
-
 			weights[board[a].w].remove(a);
-			// System.out.print("w: " + board[a].w + " ");
+			
 			board[a].w = lstW;
 			weights[lstW].addLast(a);
-			// System.out.println("analizando: " + i + " con peso " + lstW + " el elemento " + a + " el arreglo " + weights[lstW] + " " + color);
-
-			// board[a].pos = weights[lstW].size() - 1;
 		}
 	}
 

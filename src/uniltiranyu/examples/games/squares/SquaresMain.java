@@ -13,7 +13,7 @@ import uniltiranyu.Agent;
 public class SquaresMain  {
   public static void main( String[] argv ){
     // Reflection
-    Agent w_agent =  new Agent( new DummySquaresAgentProgram(Squares.WHITE));
+    Agent w_agent =  new Agent( new SquaresAgentProgram(Squares.WHITE));
     Agent b_agent =  new Agent( new SquaresAgentProgram(Squares.BLACK));
     SquaresMainFrame frame = new SquaresMainFrame( w_agent, b_agent );
     frame.setVisible(true);

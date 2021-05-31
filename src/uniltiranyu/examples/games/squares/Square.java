@@ -1,7 +1,5 @@
 package uniltiranyu.examples.games.squares;
 
-import java.util.ArrayList;
-
 import uniltiranyu.Percept;
 
 public class Square {
@@ -39,26 +37,7 @@ public class Square {
 		
 		this.w = 0;
 		this.lns = 0;
-
-		// lines = getLines();
 	}
-
-
-	private boolean[] getLines() {
-		boolean lines[] = new boolean[4];
-
-
-		int x = this.i % this.n;
-		int y = (int) Math.floor(this.i / this.n); 
-
-		System.out.println("init: " + x + " : " + y + " -- bL: " + board.length);
-
-		for(int i = 0; i < 4; i++)	
-			lines[i] = ((String) this.p.get(y + ":" + x + ":" + PS[i])).equals(Squares.TRUE);
-
-		return lines;
-	}
-
 
 	public boolean compare(boolean pLines[]){
 		boolean res = false;
@@ -81,7 +60,6 @@ public class Square {
 	public String best(){
 		Integer arr[] = {0, 1, 2, 3};
 		
-
 		Integer bstW = board.length + 10000;
 		Integer bstI = null;
 
