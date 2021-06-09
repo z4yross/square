@@ -1,5 +1,7 @@
 package uniltiranyu.examples.games.squares;
 
+import java.util.ArrayList;
+
 import uniltiranyu.Percept;
 
 public class Square {
@@ -24,6 +26,9 @@ public class Square {
 	protected boolean lines[] = {false, false, false, false};
 	protected Integer pos;
 
+	protected ArrayList<Integer> conected;
+	protected boolean isConected[];
+
 	public Square(Integer i, Integer l, Integer r, Integer t, Integer b, Square board[], Percept p, int n){
 		this.i = i;
 		this.l = l;
@@ -37,6 +42,9 @@ public class Square {
 		
 		this.w = 0;
 		this.lns = 0;
+
+		this.conected = new ArrayList<>();
+		this.isConected = new boolean[n * n];
 	}
 
 	public boolean compare(boolean pLines[]){

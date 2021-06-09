@@ -21,6 +21,9 @@ public class SquaresAgentProgram implements AgentProgram{
 
 	protected String lines[] = {Squares.LEFT, Squares.RIGHT, Squares.TOP, Squares.BOTTOM};
 
+	private Integer zones;
+	private boolean start;
+
 	public SquaresAgentProgram(String color){
         this.color = color;        
     }
@@ -36,14 +39,24 @@ public class SquaresAgentProgram implements AgentProgram{
 				weights[i] = new LinkedList<Integer>();
 
 			board = init(p);
+			zones = 0;
 		}
 
 		if (p.get(Squares.TURN).equals(color) ){
+			zones = 0;
 			ArrayList<Integer> changes = scan(p);
 
-			for(Integer i: changes)	backtrack(i);
+			// System.out.println(zones + "\n" + "--------------" + color + "-------------");
 
-			int i = 0;
+			for(Integer i: changes)	backtrack(i);
+			countZones(p);
+
+			if(!start && changes.size() > 6) start = true;
+
+			boolean chkIDX = zones % 2 == 0 && weights[3].size() <= 2; 
+			int i = chkIDX ? 2 : 0;
+
+			// System.out.println(zones + "\n" + "---------------------------");
 
 			while(true){
 				if(i < 0 || i >= weights.length) i = 0;
@@ -68,6 +81,33 @@ public class SquaresAgentProgram implements AgentProgram{
 		return new Action(Squares.PASS);
 	}
 
+	private void countZones(Percept p){
+		boolean check[] = new boolean[board.length];
+		for(int i = 0; i < board.length; i++){
+			if(!check[i]){
+				check[i] = true;
+
+				Square sqr = board[i];
+				if(sqr.conected.size() >= 1){
+					for(int j = 0; j < sqr.conected.size(); j++){
+						Integer nxt = sqr.conected.get(j);
+						check[nxt] = true;
+					}
+
+					int x = i % N;
+					int y = (int) Math.floor(i / N); 
+
+					boolean isEmpt = p.get(y + ":" + x).equals(Squares.SPACE);
+					this.zones += isEmpt && sqr.w > 2 ? 1 : 0;
+
+					// if(isEmpt && sqr.w > 2) {
+					// 	System.out.println("i:" + i + " arr: " + sqr.conected + " w: " + sqr.w + " sz: " + sqr.conected.size());
+					// }
+				}
+			}
+		}
+	}
+
 	private void backtrack(Integer i) {
 		this.lstW = 0;
 		this.stack = new Stack<>();
@@ -77,18 +117,19 @@ public class SquaresAgentProgram implements AgentProgram{
 		boolean checked[] = new boolean[N * N];
 
 		rc.push(i);
-
+		
 		while(!rc.empty()){
 			Integer actual = rc.pop();
-			if(actual == null || checked[actual]) continue;
 
+			if(actual == null || checked[actual]) continue;
+			
+			Square sq = board[actual];
 			checked[actual] = true;
 
-			Square sq = board[actual];
 			if(sq.lns == 2) {
 				lstW = ++weight;
 				this.stack.push(actual);
-	
+
 				if(!sq.lines[3]) rc.push(sq.b);
 				if(!sq.lines[2]) rc.push(sq.t);
 				if(!sq.lines[1]) rc.push(sq.r);
@@ -96,6 +137,10 @@ public class SquaresAgentProgram implements AgentProgram{
 			}
 		}
 
+		// if(stack.contains(61) || stack.contains(62)) System.out.println(stack);
+
+		ArrayList<Integer> lst = new ArrayList<>(this.stack);
+		
 		while(!stack.empty()){
 			Integer a = stack.pop();
 
@@ -103,6 +148,8 @@ public class SquaresAgentProgram implements AgentProgram{
 			
 			board[a].w = lstW;
 			weights[lstW].addLast(a);
+
+			board[a].conected = new ArrayList<>(lst);
 		}
 	}
 
