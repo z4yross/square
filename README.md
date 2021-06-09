@@ -18,3 +18,4 @@ The `JAVA DEPENDENCIES` view allows you to manage your dependencies. More detail
 - [ ] Optimizar
   - [X] Arreglar calculo pesos cuando una linea divide la continuidad
   - [X] Eliminar recursividad. Backtrack con pila.
+  - [X] Contar zonas y completar cuando sean pares.
