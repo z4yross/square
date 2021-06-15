@@ -5,6 +5,7 @@
 package uniltiranyu.examples.games.squares;
 
 import uniltiranyu.Agent;
+import uniltiranyu.examples.games.squares.isi2021.squareAgentProgram.SquaresAgentProgram;
 
 /**
  *

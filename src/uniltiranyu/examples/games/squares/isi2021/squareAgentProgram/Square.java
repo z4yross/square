@@ -1,8 +1,10 @@
-package uniltiranyu.examples.games.squares;
+package uniltiranyu.examples.games.squares.isi2021.squareAgentProgram;
 
 import java.util.ArrayList;
 
 import uniltiranyu.Percept;
+import uniltiranyu.examples.games.squares.Squares;
+import uniltiranyu.examples.games.squares.isi2021.squareAgentProgram.Square;
 
 public class Square {
 

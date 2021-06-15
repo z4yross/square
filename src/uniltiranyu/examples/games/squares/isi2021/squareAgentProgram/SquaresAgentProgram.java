@@ -1,12 +1,14 @@
-package uniltiranyu.examples.games.squares;
+package uniltiranyu.examples.games.squares.isi2021.squareAgentProgram;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
 
+import nsgl.agents.examples.games.squares.Squares;
 import uniltiranyu.Action;
 import uniltiranyu.AgentProgram;
 import uniltiranyu.Percept;
+
 
 public class SquaresAgentProgram implements AgentProgram{
 
